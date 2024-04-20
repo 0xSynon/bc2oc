@@ -1,0 +1,21 @@
+{
+  "name": "bc2oc",
+  "version": "0.0.1",
+  "main": "index.js",
+  "license": "MIT",
+  "description": "Disassemble EVM bytecode to opcodes",
+  "keywords": [
+    "evm",
+    "bytecode",
+    "opcode"
+  ],
+  "homepage": "https://github.com/0xSynon/bc2oc",
+  "bugs": {
+    "url": "https://github.com/0xSynon/bc2oc/issues",
+    "email": "dev@devhunt.eu"
+  },
+  "author": "0xSynon <dev@devhunt.eu>",
+  "repository": "github:0xSynon/bc2oc",
+  "main": "index.js",
+  "bin": "index.js"
+}
