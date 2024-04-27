@@ -13,31 +13,42 @@ function displayHelp() {
   console.log('');
 }
 
-if (process.stdin.isTTY) {
-  displayHelp();
-  process.exit(0);
+function main() {
+  if (process.stdin.isTTY) {
+    displayHelp();
+    process.exit(0);
+  }
+
+  process.argv.shift();
+  process.argv.shift();
+
+  const chunks = [];
+  process.stdin.on('readable', () => {
+    let chunk;
+    while (chunk = process.stdin.read()) {
+      chunks.push(chunk);
+    }
+  });
+
+  process.stdin.on('end', () => {
+    let bytecode = chunks.join('');
+    if (process.argv.includes('--strip-init')) {
+      const index = bytecode.indexOf('3d393df3');
+      if (index === -1) {
+        throw new Error('Could not locate initialization');
+      }
+      bytecode = bytecode.slice(index + 8);
+    }
+    const disassembled = disassemble(bytecode);
+    console.log(format(disassembled));
+  });
 }
 
-process.argv.shift();
-process.argv.shift();
-
-const chunks = [];
-process.stdin.on('readable', () => {
-  let chunk;
-  while (chunk = process.stdin.read()) {
-    chunks.push(chunk);
-  }
-});
-
-process.stdin.on('end', () => {
-  let bytecode = chunks.join('');
-  if (process.argv.includes('--strip-init')) {
-    const index = bytecode.indexOf('3d393df3');
-    if (index === -1) {
-      throw new Error('Could not locate initialization');
-    }
-    bytecode = bytecode.slice(index + 8);
-  }
-  const disassembled = disassemble(bytecode);
-  console.log(format(disassembled));
-});
+if (require.main === module) {
+    main();
+} else {
+    module.exports = {
+      disassemble,
+      format,
+    };
+}

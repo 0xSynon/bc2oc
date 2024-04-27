@@ -1,0 +1,6 @@
+{
+  "name": "@synon-eth/bc2oc",
+  "version": "0.0.3",
+  "main": "index.js",
+  "exports": "./index.js"
+}
